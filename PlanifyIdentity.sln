@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planify.Identity", "Planify.Identity\Planify.Identity.csproj", "{4C9E915D-8FBB-4F31-86C6-7B6529A493F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanifyIdentity", "PlanifyIdentity\PlanifyIdentity.csproj", "{4C9E915D-8FBB-4F31-86C6-7B6529A493F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B18391E5-9927-444E-9CE9-5D1A1AAD5976}"
 	ProjectSection(SolutionItems) = preProject
