@@ -83,7 +83,7 @@ app.MapGet("/Weather", async () =>
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     string longitude = "-74.063644";
     string latitude = "4.624335";
-    string url = "https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=" + longitude + "&lat=" + latitude + "&units=metric&lang=en";
+    string url = $"https://weatherbit-v1-mashape.p.rapidapi.com/current?lon={longitude}&lat={latitude}&units=metric&lang=en";
     var request = new HttpRequestMessage
     {
         Method = HttpMethod.Get,
