@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Planify.Identity.Migrations;
+namespace PlanifyIdentity.Migrations;
 
 /// <inheritdoc />
 public partial class AddUserFields : Migration

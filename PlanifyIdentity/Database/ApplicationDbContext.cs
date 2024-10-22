@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Planify.Identity.Database;
+namespace PlanifyIdentity.Database;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {

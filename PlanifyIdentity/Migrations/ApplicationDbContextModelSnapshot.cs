@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Planify.Identity.Database;
+using PlanifyIdentity.Database;
 
 #nullable disable
 
-namespace Planify.Identity.Migrations
+namespace PlanifyIdentity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -155,7 +155,7 @@ namespace Planify.Identity.Migrations
                     b.ToTable("AspNetUserTokens", "identity");
                 });
 
-            modelBuilder.Entity("Planify.Identity.Database.Status", b =>
+            modelBuilder.Entity("PlanifyIdentity.Database.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,7 +195,7 @@ namespace Planify.Identity.Migrations
                     b.ToTable("Status", "identity");
                 });
 
-            modelBuilder.Entity("Planify.Identity.Database.User", b =>
+            modelBuilder.Entity("PlanifyIdentity.Database.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -287,7 +287,7 @@ namespace Planify.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Planify.Identity.Database.User", null)
+                    b.HasOne("PlanifyIdentity.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,7 +296,7 @@ namespace Planify.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Planify.Identity.Database.User", null)
+                    b.HasOne("PlanifyIdentity.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -311,7 +311,7 @@ namespace Planify.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Planify.Identity.Database.User", null)
+                    b.HasOne("PlanifyIdentity.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,16 +320,16 @@ namespace Planify.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Planify.Identity.Database.User", null)
+                    b.HasOne("PlanifyIdentity.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Planify.Identity.Database.User", b =>
+            modelBuilder.Entity("PlanifyIdentity.Database.User", b =>
                 {
-                    b.HasOne("Planify.Identity.Database.Status", "Status")
+                    b.HasOne("PlanifyIdentity.Database.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)

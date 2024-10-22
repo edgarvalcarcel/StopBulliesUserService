@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Planify.Identity.Database.Common;
+namespace PlanifyIdentity.Database.Common;
 
 public abstract class BaseAuditableEntity
 {

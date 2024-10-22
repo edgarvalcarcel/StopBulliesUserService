@@ -1,6 +1,6 @@
-﻿using Planify.Identity.Database.Common;
+﻿using PlanifyIdentity.Database.Common;
 
-namespace Planify.Identity.Database;
+namespace PlanifyIdentity.Database;
 public class Status: BaseAuditableEntity
 {
     public string? Entity { get; set; }

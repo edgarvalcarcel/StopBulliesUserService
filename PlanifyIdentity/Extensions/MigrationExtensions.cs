@@ -1,7 +1,7 @@
-﻿using Planify.Identity.Database;
+﻿using PlanifyIdentity.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace Planify.Identity.Extensions;
+namespace PlanifyIdentity.Extensions;
 
 public static class MigrationExtensions
 {

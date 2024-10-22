@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Planify.Identity.Database;
-using Planify.Identity.Extensions;
+using PlanifyIdentity.Database;
+using PlanifyIdentity.Extensions;
 using PlanifyIdentity.Infrastructure;
 using Swashbuckle.AspNetCore.Filters;
 
