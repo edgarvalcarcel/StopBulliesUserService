@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,17 +15,13 @@ public class ApplicationDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.HasDefaultSchema("identity");
-       
-        builder.Entity<IdentityRole>(entity => entity.ToTable(name: "Role"));
-        builder.Entity<IdentityUser>(entity => entity.ToTable(name: "User"));
-        builder.Entity<IdentityUserClaim<string>>(entity => entity.ToTable("UserClaim"));
-        builder.Entity<IdentityUserLogin<string>>(entity => entity.ToTable("UserLogin"));
-        builder.Entity<IdentityUserRole<string>>(entity => entity.ToTable("UserRole"));
+        builder.Entity<IdentityRole>(b => b.ToTable(name: "Role"));
+        builder.Entity<User>(b => b.ToTable("User"));
+        builder.Entity<IdentityRoleClaim<string>>(b => b.ToTable(name: "RoleClaims"));
+        builder.Entity<IdentityUserClaim<string>>(b => b.ToTable("UserClaim"));
+        builder.Entity<IdentityUserLogin<string>>(b => b.ToTable("UserLogin"));
+        builder.Entity<IdentityUserRole<string>>(b => b.ToTable("UserRole"));
         builder.Entity<IdentityUserToken<string>>(entity => entity.ToTable("UserToken"));
-       
-        
-
-
+        builder.HasDefaultSchema("identity");
     }
 }
