@@ -1,0 +1,24 @@
+﻿[
+  {
+    "status": [
+      {
+        "Id": 1,
+        "Entity": "Global",
+        "Name": "Enabled",
+        "Description": "Enabled status",
+        "Order": "1",
+        "IsEnabled": true
+      },
+      {
+        "Id": 2,
+        "Entity": "Global",
+        "Name": "Disabled",
+        "Description": "Disabled status",
+        "Order": "2",
+        "IsEnabled": false
+      }
+    ]
+  }
+]
+
+ 

@@ -1,12 +1,15 @@
- using System.Net.Http.Headers;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using PlanifyIdentity.Database;
 using PlanifyIdentity.Extensions;
 using PlanifyIdentity.Infrastructure;
+using Serilog;
+using Serilog.Core;
 using Swashbuckle.AspNetCore.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -31,7 +34,9 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
-
+/* comment for inmigration */
+builder.Services.AddScoped<ApplicationDbContextInitializer>();
+/* Uncomment for inmigration */
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
@@ -54,17 +59,37 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+//Add support to logging with SERILOG
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
 WebApplication app = builder.Build();
- 
+//Initialise and seed database
+using IServiceScope scope = app.Services.CreateScope();
+ApplicationDbContextInitializer initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+if (builder.Configuration.GetValue<bool>("SeedingDatabase"))
+{
+    try
+    {
+        await initializer.TrySeedAsync();
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "An error occurred while seeding the database.");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.ApplyMigrations();
-} 
-
+}
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.MapIdentityApi<User>();
 

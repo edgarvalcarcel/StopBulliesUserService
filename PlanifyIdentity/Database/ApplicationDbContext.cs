@@ -11,7 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         : base(options)
     {
     }
-
+    public DbSet<Status> Status { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
