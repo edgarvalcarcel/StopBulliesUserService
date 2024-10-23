@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using PlanifyIdentity.Database;
+using PlanifyIdentity.Domain.Entities;
 using PlanifyIdentity.Extensions;
 using PlanifyIdentity.Infrastructure;
 using Serilog;

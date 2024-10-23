@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PlanifyIdentity.Database;
+namespace PlanifyIdentity.Domain.Entities;
 
 public class User : IdentityUser
 {

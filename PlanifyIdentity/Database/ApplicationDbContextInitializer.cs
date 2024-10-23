@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PlanifyIdentity.Domain.Entities;
 
 namespace PlanifyIdentity.Database;
 public class ApplicationDbContextInitializer(ApplicationDbContext context)
