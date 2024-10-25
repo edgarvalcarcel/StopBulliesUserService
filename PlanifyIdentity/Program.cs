@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -18,12 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 // Authentication & Authorization Configuration
-builder.Services.AddAuthorization()
-        .AddAuthentication();
-        
-//builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-//    .AddCookie(IdentityConstants.ApplicationScheme)
-//    .AddBearerToken(IdentityConstants.BearerScheme);*/
+builder.Services.AddAuthorization().AddAuthentication();
 
 // Configuración de Identity Core
 builder.Services.AddIdentityApiEndpoints<User>()
@@ -33,13 +27,14 @@ builder.Services.AddIdentityApiEndpoints<User>()
 
 // Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
+
 /* Authorization Button on Swagger */
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Please enter token",
+        Description = "Please enter token : Bearer {token}",
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         BearerFormat = "JWT",
@@ -54,6 +49,9 @@ builder.Services.AddScoped<ApplicationDbContextInitializer>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
+    // Default SignIn settings.
+    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
     // Password settings.
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -108,8 +106,8 @@ app.MapGet("User/me", async (ClaimsPrincipal claims, ApplicationDbContext contex
 
     return await context.Users.FindAsync(userId);
 })
-    .WithOpenApi(o => { o.Tags[0].Name = "Users"; return o; })
-    .WithSummary("Data of the user logged in").RequireAuthorization();
+.WithOpenApi(o => { o.Tags[0].Name = "Users"; return o; })
+.WithSummary("Data of the user logged in").RequireAuthorization();
 
 app.MapGet("/Hi", (ClaimsPrincipal user) => $"Hello {user.Identity!.Name}")
     .WithOpenApi(o => { o.Tags[0].Name = "Users"; return o; })
@@ -152,4 +150,5 @@ app.MapGroup("/Identity")
     .WithOpenApi(o => { o.Tags[0].Name = "Identity"; return o; })
     .MapPost("/logout", async (SignInManager<User> signInManager) => await signInManager.SignOutAsync()
     .ConfigureAwait(false)).RequireAuthorization();
+
 await app.RunAsync();
