@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -26,6 +27,7 @@ builder.Services.AddAuthorization()
 
 // Configuración de Identity Core
 builder.Services.AddIdentityApiEndpoints<User>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
 
@@ -37,8 +39,11 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
+        Description = "Please enter token",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.ApiKey,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
@@ -143,4 +148,8 @@ app.MapGroup("/Identity")
     .WithOpenApi(o => { o.Tags[0].Name = "Identity"; return o; })
     .MapIdentityApi<User>();
 
+app.MapGroup("/Identity")
+    .WithOpenApi(o => { o.Tags[0].Name = "Identity"; return o; })
+    .MapPost("/logout", async (SignInManager<User> signInManager) => await signInManager.SignOutAsync()
+    .ConfigureAwait(false)).RequireAuthorization();
 await app.RunAsync();
