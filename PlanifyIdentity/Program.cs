@@ -17,7 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 // Authentication & Authorization Configuration
-builder.Services.AddAuthorization().AddAuthentication();
+builder.Services.AddAuthorization()
+        .AddAuthentication();
 
 // Configuración de Identity Core
 builder.Services.AddIdentityApiEndpoints<User>()
@@ -27,14 +28,13 @@ builder.Services.AddIdentityApiEndpoints<User>()
 
 // Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
-
 /* Authorization Button on Swagger */
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Please enter token : Bearer {token}",
+        Description = "Please type token : Bearer {token}",
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         BearerFormat = "JWT",
@@ -49,9 +49,6 @@ builder.Services.AddScoped<ApplicationDbContextInitializer>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Default SignIn settings.
-    options.SignIn.RequireConfirmedEmail = true;
-    options.SignIn.RequireConfirmedPhoneNumber = false;
     // Password settings.
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -67,6 +64,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
 //Add support to logging with SERILOG
@@ -83,7 +82,7 @@ ApplicationDbContextInitializer initializer = scope.ServiceProvider.GetRequiredS
 if (builder.Configuration.GetValue<bool>("SeedingDatabase"))
 {
     try
-   {
+    {
         await initializer.TrySeedAsync();
     }
     catch (Exception ex)
@@ -106,39 +105,39 @@ app.MapGet("User/me", async (ClaimsPrincipal claims, ApplicationDbContext contex
 
     return await context.Users.FindAsync(userId);
 })
-.WithOpenApi(o => { o.Tags[0].Name = "Users"; return o; })
-.WithSummary("Data of the user logged in").RequireAuthorization();
+    .WithOpenApi(o => { o.Tags[0].Name = "Users"; return o; })
+    .WithSummary("Data of the user logged in").RequireAuthorization();
 
 app.MapGet("/Hi", (ClaimsPrincipal user) => $"Hello {user.Identity!.Name}")
     .WithOpenApi(o => { o.Tags[0].Name = "Users"; return o; })
     .WithSummary("Hi User").RequireAuthorization();
 
 app.MapGet("/Weather", async () =>
+{
+    var client = new HttpClient();
+    client.DefaultRequestHeaders.Accept.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    string longitude = "-74.063644";
+    string latitude = "4.624335";
+    string url = $"https://weatherbit-v1-mashape.p.rapidapi.com/current?lon={longitude}&lat={latitude}&units=metric&lang=en";
+    var request = new HttpRequestMessage
     {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        string longitude = "-74.063644";
-        string latitude = "4.624335";
-        string url = $"https://weatherbit-v1-mashape.p.rapidapi.com/current?lon={longitude}&lat={latitude}&units=metric&lang=en";
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url),
-            Headers =
+        Method = HttpMethod.Get,
+        RequestUri = new Uri(url),
+        Headers =
         {
             { "x-rapidapi-key", "e5d7c26cc2mshfcd70a329e479c7p1b3d94jsnac356a890845" },
             { "x-rapidapi-host", "weatherbit-v1-mashape.p.rapidapi.com" },
         },
-        };
-        using HttpResponseMessage response = await client.SendAsync(request);
-        response.EnsureSuccessStatusCode();
+    };
+    using HttpResponseMessage response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
 
-        string responseString = await response.Content.ReadAsStringAsync();
-        WeatherResponse myDeserializedClass = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
+    string responseString = await response.Content.ReadAsStringAsync();
+    WeatherResponse myDeserializedClass = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
 
-        return myDeserializedClass;
-    }
+    return myDeserializedClass;
+}
     ).WithOpenApi(o => { o.Tags[0].Name = "Weather"; return o; })
      .WithSummary("City Weather").RequireAuthorization();
 
@@ -150,5 +149,4 @@ app.MapGroup("/Identity")
     .WithOpenApi(o => { o.Tags[0].Name = "Identity"; return o; })
     .MapPost("/logout", async (SignInManager<User> signInManager) => await signInManager.SignOutAsync()
     .ConfigureAwait(false)).RequireAuthorization();
-
 await app.RunAsync();
