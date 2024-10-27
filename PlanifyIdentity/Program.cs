@@ -17,9 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 // Authentication & Authorization Configuration
-builder.Services.AddAuthorization()
-        .AddAuthentication();
-
+builder.Services.AddAuthorization();    
+builder.Services.AddAuthentication(IdentityConstants.BearerScheme).AddBearerToken();
 // Configuración de Identity Core
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
@@ -64,7 +63,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
-    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
