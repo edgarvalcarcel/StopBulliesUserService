@@ -19,6 +19,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 // Authentication & Authorization Configuration
 builder.Services.AddAuthorization();    
 builder.Services.AddAuthentication(IdentityConstants.BearerScheme).AddBearerToken();
+builder.Services.AddAuthorizationBuilder();
 // Configuración de Identity Core
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
