@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ using PlanifyIdentity.Database;
 using PlanifyIdentity.Domain.Entities;
 using PlanifyIdentity.Extensions;
 using PlanifyIdentity.Infrastructure;
-using Serilog;
+///using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -23,8 +24,7 @@ builder.Services.AddAuthorizationBuilder();
 // Configuración de Identity Core
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddApiEndpoints();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
@@ -68,27 +68,42 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
-//Add support to logging with SERILOG
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateBootstrapLogger();
 
-WebApplication app = builder.Build();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+////Add support to logging with SERILOG
+//builder.Host.UseSerilog((context, configuration) =>
+///    configuration.ReadFrom.Configuration(context.Configuration));
+//Log.Logger = new LoggerConfiguration()
+//    .WriteTo.Console()
+///    .CreateBootstrapLogger();
+
+//Read the secret we stored using Secret Manager
+IConfigurationSection IdentitySecretsSettings = builder.Configuration.GetSection("IdentitySecrets");
+IdentitySecrets secrets = new()
+{
+    Username = IdentitySecretsSettings.GetValue<string>("userName"),
+    Password = IdentitySecretsSettings.GetValue<string>("Password"),
+    OutgoingServer = IdentitySecretsSettings.GetValue<string>("OutgoingServer"),
+    SMTPPort = IdentitySecretsSettings.GetValue<int>("SMTPPort"),
+};
+builder.Services.AddSingleton(secrets);
+
+WebApplication app = builder.Build(); 
 
 using IServiceScope scope = app.Services.CreateScope();
 ApplicationDbContextInitializer initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
 if (builder.Configuration.GetValue<bool>("SeedingDatabase"))
 {
-    try
-    {
+    //try
+    ///{
         await initializer.TrySeedAsync();
-    }
-    catch (Exception ex)
-    {
-        Log.Error(ex, "An error occurred while seeding the database.");
-    }
+    ///}
+    ///catch (Exception ex)
+    ///{ }
+    ////catch (Exception ex)
+    ///{
+    ///    Log.Error(ex, "An error occurred while seeding the database.");
+    ///}
 }
 
 if (app.Environment.IsDevelopment())
@@ -97,7 +112,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.ApplyMigrations();
 }
-app.UseSerilogRequestLogging();
+////app.UseSerilogRequestLogging();
 
 app.MapGet("User/me", async (ClaimsPrincipal claims, ApplicationDbContext context) =>
 {
@@ -149,4 +164,5 @@ app.MapGroup("/Identity")
     .WithOpenApi(o => { o.Tags[0].Name = "Identity"; return o; })
     .MapPost("/logout", async (SignInManager<User> signInManager) => await signInManager.SignOutAsync()
     .ConfigureAwait(false)).RequireAuthorization();
+app.MapGet("/secrets", () => secrets.OutgoingServer);
 await app.RunAsync();
