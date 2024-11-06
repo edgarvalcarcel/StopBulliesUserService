@@ -68,8 +68,17 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
-
-builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
+builder.Services.Configure<MailKitEmailSenderOptions>(options =>
+{
+    options.Host_Address = builder.Configuration["ExternalProviders:MailKit:SMTP:Address"];
+    options.Host_Port = Convert.ToInt32(builder.Configuration["ExternalProviders:MailKit:SMTP:Port"]);
+    options.Host_Username = builder.Configuration["ExternalProviders:MailKit:SMTP:Account"]??"";
+    options.Host_Password = builder.Configuration["ExternalProviders:MailKit:SMTP:Password"] ?? "";
+    options.Sender_EMail = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderEmail"] ?? "";
+    options.Sender_Name = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderName"] ?? "";
+});
+////builder.Services.AddTransient<IEmailSender, EmailSender>();
 ////Add support to logging with SERILOG
 //builder.Host.UseSerilog((context, configuration) =>
 ///    configuration.ReadFrom.Configuration(context.Configuration));
@@ -77,16 +86,16 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 //    .WriteTo.Console()
 ///    .CreateBootstrapLogger();
 
-//Read the secret we stored using Secret Manager
-IConfigurationSection IdentitySecretsSettings = builder.Configuration.GetSection("IdentitySecrets");
-IdentitySecrets secrets = new()
-{
-    Username = IdentitySecretsSettings.GetValue<string>("userName"),
-    Password = IdentitySecretsSettings.GetValue<string>("Password"),
-    OutgoingServer = IdentitySecretsSettings.GetValue<string>("OutgoingServer"),
-    SMTPPort = IdentitySecretsSettings.GetValue<int>("SMTPPort"),
-};
-builder.Services.AddSingleton(secrets);
+////Read the secret we stored using Secret Manager
+////IConfigurationSection IdentitySecretsSettings = builder.Configuration.GetSection("IdentitySecrets");
+//IdentitySecrets secrets = new()
+////{
+//    Username = IdentitySecretsSettings.GetValue<string>("userName"),
+//    Password = IdentitySecretsSettings.GetValue<string>("Password"),
+//    OutgoingServer = IdentitySecretsSettings.GetValue<string>("OutgoingServer"),
+//    SMTPPort = IdentitySecretsSettings.GetValue<int>("SMTPPort"),
+////};
+////builder.Services.AddSingleton(secrets);
 
 WebApplication app = builder.Build(); 
 
@@ -164,5 +173,5 @@ app.MapGroup("/Identity")
     .WithOpenApi(o => { o.Tags[0].Name = "Identity"; return o; })
     .MapPost("/logout", async (SignInManager<User> signInManager) => await signInManager.SignOutAsync()
     .ConfigureAwait(false)).RequireAuthorization();
-app.MapGet("/secrets", () => secrets.OutgoingServer);
+////app.MapGet("/secrets", () => secrets.OutgoingServer);
 await app.RunAsync();
