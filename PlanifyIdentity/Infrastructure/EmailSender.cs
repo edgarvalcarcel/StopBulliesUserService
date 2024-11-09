@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using System.Security.Cryptography.Xml;
-using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using PlanifyIdentity.Extensions;
 namespace PlanifyIdentity.Infrastructure;
