@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using System.Threading.Tasks;
 
 namespace PlanifyIdentity.Infrastructure;
 
-public class MailKitEmailSender : IEmailSender
+internal class MailKitEmailSender : IEmailSender
 {
     public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options)
     {
@@ -44,7 +43,7 @@ public class MailKitEmailSender : IEmailSender
         {
             await smtp.ConnectAsync(Options.Host_Address, Options.Host_Port, Options.Host_SecureSocketOptions);
             await smtp.AuthenticateAsync(Options.Host_Username, Options.Host_Password);
-            await smtp.SendAsync(email);
+            _ = await smtp.SendAsync(email);
             await smtp.DisconnectAsync(true);
         }
 
