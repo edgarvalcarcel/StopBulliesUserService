@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using PlanifyIdentity.Domain.Entities;
 
 namespace PlanifyIdentity.Database;
-public class ApplicationDbContextInitializer(ApplicationDbContext context)
+internal sealed class ApplicationDbContextInitializer(ApplicationDbContext context)
 {
     public async Task TrySeedAsync()
     {
@@ -26,12 +26,12 @@ public class ApplicationDbContextInitializer(ApplicationDbContext context)
                     IsEnabled = (bool)statusData["IsEnabled"]!,
                     Description = statusData["Description"]!.ToString().Trim()
                 };
-                context.Status.Add(statusRecord);
+                _ = context.Status.Add(statusRecord);
             }
         }
         if (!existData)
         {
-            await context.SaveChangesAsync();
+            _ = await context.SaveChangesAsync();
         }
     }
 }

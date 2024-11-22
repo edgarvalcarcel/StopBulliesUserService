@@ -9,7 +9,7 @@ using PlanifyIdentity.Database;
 using PlanifyIdentity.Domain.Entities;
 using PlanifyIdentity.Extensions;
 using PlanifyIdentity.Infrastructure;
-///using Serilog;
+
 using Swashbuckle.AspNetCore.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 // Authentication & Authorization Configuration
-builder.Services.AddAuthorization();    
+builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(IdentityConstants.BearerScheme).AddBearerToken();
 builder.Services.AddAuthorizationBuilder();
 // Configuración de Identity Core
@@ -73,52 +73,24 @@ builder.Services.Configure<MailKitEmailSenderOptions>(options =>
 {
     options.Host_Address = builder.Configuration["ExternalProviders:MailKit:SMTP:Address"];
     options.Host_Port = Convert.ToInt32(builder.Configuration["ExternalProviders:MailKit:SMTP:Port"]);
-    options.Host_Username = builder.Configuration["ExternalProviders:MailKit:SMTP:Account"]??"";
+    options.Host_Username = builder.Configuration["ExternalProviders:MailKit:SMTP:Account"] ?? "";
     options.Host_Password = builder.Configuration["ExternalProviders:MailKit:SMTP:Password"] ?? "";
     options.Sender_EMail = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderEmail"] ?? "";
     options.Sender_Name = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderName"] ?? "";
 });
-////builder.Services.AddTransient<IEmailSender, EmailSender>();
-////Add support to logging with SERILOG
-//builder.Host.UseSerilog((context, configuration) =>
-///    configuration.ReadFrom.Configuration(context.Configuration));
-//Log.Logger = new LoggerConfiguration()
-//    .WriteTo.Console()
-///    .CreateBootstrapLogger();
-
-////Read the secret we stored using Secret Manager
-////IConfigurationSection IdentitySecretsSettings = builder.Configuration.GetSection("IdentitySecrets");
-//IdentitySecrets secrets = new()
-////{
-//    Username = IdentitySecretsSettings.GetValue<string>("userName"),
-//    Password = IdentitySecretsSettings.GetValue<string>("Password"),
-//    OutgoingServer = IdentitySecretsSettings.GetValue<string>("OutgoingServer"),
-//    SMTPPort = IdentitySecretsSettings.GetValue<int>("SMTPPort"),
-////};
-////builder.Services.AddSingleton(secrets);
-
-WebApplication app = builder.Build(); 
+WebApplication app = builder.Build();
 
 using IServiceScope scope = app.Services.CreateScope();
 ApplicationDbContextInitializer initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
 if (builder.Configuration.GetValue<bool>("SeedingDatabase"))
 {
-    //try
-    ///{
-        await initializer.TrySeedAsync();
-    ///}
-    ///catch (Exception ex)
-    ///{ }
-    ////catch (Exception ex)
-    ///{
-    ///    Log.Error(ex, "An error occurred while seeding the database.");
-    ///}
+    await initializer.TrySeedAsync();
 }
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    _ = app.UseSwagger();
+    _ = app.UseSwaggerUI();
     app.ApplyMigrations();
 }
 ////app.UseSerilogRequestLogging();
@@ -155,7 +127,7 @@ app.MapGet("/Weather", async () =>
         },
     };
     using HttpResponseMessage response = await client.SendAsync(request);
-    response.EnsureSuccessStatusCode();
+    _ = response.EnsureSuccessStatusCode();
 
     string responseString = await response.Content.ReadAsStringAsync();
     WeatherResponse myDeserializedClass = JsonConvert.DeserializeObject<WeatherResponse>(responseString);

@@ -1,7 +1,7 @@
 ﻿using PlanifyIdentity.Database.Common;
 
 namespace PlanifyIdentity.Domain.Entities;
-public class Status : BaseAuditableEntity
+internal sealed class Status : BaseAuditableEntity
 {
     public string? Entity { get; set; }
     public string? Name { get; set; }

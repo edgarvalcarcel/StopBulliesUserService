@@ -6,7 +6,7 @@ using MimeKit.Text;
 
 namespace PlanifyIdentity.Infrastructure;
 
-internal class MailKitEmailSender : IEmailSender
+internal sealed class MailKitEmailSender : IEmailSender
 {
     public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options)
     {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace PlanifyIdentity.Infrastructure;
-public class Datum
+internal sealed class Datum
 {
     [JsonProperty("app_temp")]
     public double? AppTemp { get; set; }
@@ -118,7 +118,7 @@ public class Datum
     public double? WindSpd { get; set; }
 }
 
-public class WeatherResponse
+internal sealed class WeatherResponse
 {
     [JsonProperty("count")]
     public int? Count { get; set; }
@@ -127,7 +127,7 @@ public class WeatherResponse
     public List<Datum> Data { get; set; }
 }
 
-public class Weather
+internal sealed class Weather
 {
     [JsonProperty("description")]
     public string Description { get; set; }

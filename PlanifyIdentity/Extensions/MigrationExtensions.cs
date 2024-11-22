@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PlanifyIdentity.Extensions;
 
-public static class MigrationExtensions
+internal static class MigrationExtensions
 {
     public static void ApplyMigrations(this IApplicationBuilder app)
     {

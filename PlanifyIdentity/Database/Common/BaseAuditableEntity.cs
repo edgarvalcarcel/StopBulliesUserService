@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanifyIdentity.Database.Common;
 
-public abstract class BaseAuditableEntity
+internal abstract class BaseAuditableEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

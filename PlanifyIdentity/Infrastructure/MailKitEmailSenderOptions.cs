@@ -1,6 +1,6 @@
 ﻿using MailKit.Security;
 namespace PlanifyIdentity.Infrastructure;
-public class MailKitEmailSenderOptions
+internal sealed class MailKitEmailSenderOptions
 {
     public MailKitEmailSenderOptions()
     {

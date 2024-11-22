@@ -2,7 +2,7 @@
 
 namespace PlanifyIdentity.Extensions;
 
-public class IdentitySecrets
+internal sealed class IdentitySecrets
 {
     public string? Username { get; set; }
     public string? Password { get; set; }
