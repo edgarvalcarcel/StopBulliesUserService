@@ -20,7 +20,7 @@ internal sealed class MailKitEmailSender : IEmailSender
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
         string htmlMsg = OptMailDesign.HtmlDesign;
-        //*htmlMsg = _message.Replace("{{name}}", _user.Identity!.Name);*/
+        ////string customMessage = htmlMsg.Replace("{{name}}", _user.Identity!.Name);
         return Execute(email, subject, htmlMsg);
     }
 
