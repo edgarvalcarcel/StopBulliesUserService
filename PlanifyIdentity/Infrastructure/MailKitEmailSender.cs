@@ -3,21 +3,25 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
+using PlanifyIdentity.Domain.Entities;
 
 namespace PlanifyIdentity.Infrastructure;
 
 internal sealed class MailKitEmailSender : IEmailSender
 {
-    public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options)
+    public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options, IOptions<MailDesign> optMailDesign)
     {
         Options = options.Value;
+        OptMailDesign = optMailDesign.Value;
     }
 
     public MailKitEmailSenderOptions Options { get; set; }
-
+    public MailDesign OptMailDesign { get; set; }
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        return Execute(email, subject, htmlMessage);
+        string htmlMsg = OptMailDesign.HtmlDesign;
+        //*htmlMsg = _message.Replace("{{name}}", _user.Identity!.Name);*/
+        return Execute(email, subject, htmlMsg);
     }
 
     public async Task<bool> Execute(string to, string subject, string htmlMessage)
