@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using System.Security.Claims;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -20,8 +21,8 @@ internal sealed class MailKitEmailSender : IEmailSender
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
         string htmlMsg = OptMailDesign.HtmlDesign;
-        ////string customMessage = htmlMsg.Replace("{{name}}", _user.Identity!.Name);
-        return Execute(email, subject, htmlMsg);
+        string customMessage = htmlMsg.Replace("{{name}}", email.Trim().Split('@')[0]);
+        return Execute(email, subject, customMessage);
     }
 
     public async Task<bool> Execute(string to, string subject, string htmlMessage)

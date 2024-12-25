@@ -71,6 +71,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
 builder.Services.AddTransient<MailDesign>();
 
+
 builder.Services.Configure<MailDesign>(options => 
     options.HtmlDesign = builder.Configuration["MailDesign:HtmlDesign"] ?? "");
 
