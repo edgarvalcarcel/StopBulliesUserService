@@ -1,27 +1,27 @@
-﻿using System.Security.Claims;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using PlanifyIdentity.Domain.Entities;
 
 namespace PlanifyIdentity.Infrastructure;
-
 internal sealed class MailKitEmailSender : IEmailSender
 {
-    public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options, IOptions<MailDesign> optMailDesign)
+    public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options, IOptions<MailDesign> optMailDesign,
+        IOptions<AppSettings> optAppSettings)
     {
         Options = options.Value;
         OptMailDesign = optMailDesign.Value;
+        OptAppSettings = optAppSettings.Value;
     }
 
     public MailKitEmailSenderOptions Options { get; set; }
     public MailDesign OptMailDesign { get; set; }
+    public AppSettings OptAppSettings { get; set; }
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        string htmlMsg = OptMailDesign.HtmlDesign;
-        string customMessage = htmlMsg.Replace("{{name}}", email.Trim().Split('@')[0]);
+        string customMessage = OptMailDesign.HtmlDesign.Replace("{{name}}", email.Trim().Split('@')[0])
+        .Replace("{{confirm}}", OptAppSettings.ApplicationUrl.Trim()+ "/Identity/confirmEmail?userId=");
         return Execute(email, subject, customMessage);
     }
 

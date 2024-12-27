@@ -3,7 +3,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using PlanifyIdentity.Database;
@@ -71,6 +70,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
 builder.Services.AddTransient<MailDesign>();
 
+builder.Services.Configure<AppSettings>(options =>
+    options.ApplicationUrl = builder.Configuration["ApplicationUrl"] ?? "");
 
 builder.Services.Configure<MailDesign>(options => 
     options.HtmlDesign = builder.Configuration["MailDesign:HtmlDesign"] ?? "");
