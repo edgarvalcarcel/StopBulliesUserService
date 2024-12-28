@@ -1,8 +1,11 @@
-﻿using MailKit.Net.Smtp;
+﻿using System;
+using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
+using PlanifyIdentity.Domain.Entities;
 
 namespace PlanifyIdentity.Infrastructure;
 internal sealed class MailKitEmailSender : IEmailSender
@@ -20,8 +23,10 @@ internal sealed class MailKitEmailSender : IEmailSender
     public AppSettings OptAppSettings { get; set; }
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
+        string confirmLink = htmlMessage[htmlMessage.IndexOf("https")..htmlMessage.IndexOf("'>")];
         string customMessage = OptMailDesign.HtmlDesign.Replace("{{name}}", email.Trim().Split('@')[0])
-        .Replace("{{confirm}}", OptAppSettings.ApplicationUrl.Trim()+ "/Identity/confirmEmail?userId=");
+        .Replace("{{confirm}}", confirmLink);
+       
         return Execute(email, subject, customMessage);
     }
 
