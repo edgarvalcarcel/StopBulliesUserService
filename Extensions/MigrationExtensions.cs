@@ -1,7 +1,7 @@
-﻿using PlanifyIdentity.Database;
+﻿using StopBulliesUserService.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace PlanifyIdentity.Extensions;
+namespace StopBulliesUserService.Extensions;
 
 internal static class MigrationExtensions
 {

@@ -1,5 +1,5 @@
 ﻿using MailKit.Security;
-namespace PlanifyIdentity.Infrastructure;
+namespace StopBulliesUserService.Infrastructure;
 internal sealed class MailKitEmailSenderOptions
 {
     public MailKitEmailSenderOptions()

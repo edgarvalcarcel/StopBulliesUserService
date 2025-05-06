@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PlanifyIdentity.Infrastructure;
+namespace StopBulliesUserService.Infrastructure;
 internal sealed class Datum
 {
     [JsonProperty("app_temp")]

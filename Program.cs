@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using PlanifyIdentity.Database;
-using PlanifyIdentity.Domain.Entities;
-using PlanifyIdentity.Extensions;
-using PlanifyIdentity.Infrastructure;
+using StopBulliesUserService.Database;
+using StopBulliesUserService.Domain.Entities;
+using StopBulliesUserService.Extensions;
+using StopBulliesUserService.Infrastructure;
 
 using Swashbuckle.AspNetCore.Filters;
 

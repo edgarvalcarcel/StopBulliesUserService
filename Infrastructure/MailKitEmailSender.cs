@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using PlanifyIdentity.Domain.Entities;
+using StopBulliesUserService.Domain.Entities;
 
-namespace PlanifyIdentity.Infrastructure;
+namespace StopBulliesUserService.Infrastructure;
 internal sealed class MailKitEmailSender : IEmailSender
 {
     public MailKitEmailSender(IOptions<MailKitEmailSenderOptions> options, IOptions<MailDesign> optMailDesign,

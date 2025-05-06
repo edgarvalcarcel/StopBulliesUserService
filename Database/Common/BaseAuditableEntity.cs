@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace PlanifyIdentity.Database.Common;
+namespace StopBulliesUserService.Database.Common;
 
 internal abstract class BaseAuditableEntity
 {

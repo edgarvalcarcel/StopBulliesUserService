@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace PlanifyIdentity.Infrastructure;
+namespace StopBulliesUserService.Infrastructure;
 
-public static class WebApplicationExtensions
+internal static class WebApplicationExtensions
 {
     public static RouteGroupBuilder MapGroup(this WebApplication app, IEndpointGroupBase group)
     {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-namespace PlanifyIdentity.Infrastructure;
+namespace StopBulliesUserService.Infrastructure;
 
-public static class EndpointRouteBuilderExtensions
+internal static class EndpointRouteBuilderExtensions
 {
     public static IEndpointRouteBuilder MapGet(this IEndpointRouteBuilder builder, Delegate handler, [StringSyntax("Route")] string pattern = "")
     {

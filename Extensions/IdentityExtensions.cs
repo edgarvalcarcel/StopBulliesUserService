@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using PlanifyIdentity.Domain.Entities;
+using StopBulliesUserService.Domain.Entities;
 using System.Text;
 
-namespace PlanifyIdentity.Extensions;
+namespace StopBulliesUserService.Extensions;
 
 internal sealed class IdentityExtensions
 {

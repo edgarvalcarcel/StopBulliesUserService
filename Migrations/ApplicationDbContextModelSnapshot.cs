@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PlanifyIdentity.Database;
+using StopBulliesUserService.Database;
 
 #nullable disable
 
-namespace PlanifyIdentity.Migrations
+namespace StopBulliesUserService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -155,7 +155,7 @@ namespace PlanifyIdentity.Migrations
                     b.ToTable("UserToken", "identity");
                 });
 
-            modelBuilder.Entity("PlanifyIdentity.Database.Status", b =>
+            modelBuilder.Entity("StopBulliesUserService.Database.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,7 +195,7 @@ namespace PlanifyIdentity.Migrations
                     b.ToTable("Status", "identity");
                 });
 
-            modelBuilder.Entity("PlanifyIdentity.Database.User", b =>
+            modelBuilder.Entity("StopBulliesUserService.Database.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -287,7 +287,7 @@ namespace PlanifyIdentity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("PlanifyIdentity.Database.User", null)
+                    b.HasOne("StopBulliesUserService.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,7 +296,7 @@ namespace PlanifyIdentity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("PlanifyIdentity.Database.User", null)
+                    b.HasOne("StopBulliesUserService.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -311,7 +311,7 @@ namespace PlanifyIdentity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PlanifyIdentity.Database.User", null)
+                    b.HasOne("StopBulliesUserService.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,16 +320,16 @@ namespace PlanifyIdentity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("PlanifyIdentity.Database.User", null)
+                    b.HasOne("StopBulliesUserService.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PlanifyIdentity.Database.User", b =>
+            modelBuilder.Entity("StopBulliesUserService.Database.User", b =>
                 {
-                    b.HasOne("PlanifyIdentity.Database.Status", "Status")
+                    b.HasOne("StopBulliesUserService.Database.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,6 +1,6 @@
-﻿using PlanifyIdentity.Database.Common;
+﻿using StopBulliesUserService.Database.Common;
 
-namespace PlanifyIdentity.Domain.Entities;
+namespace StopBulliesUserService.Domain.Entities;
 internal sealed class Status : BaseAuditableEntity
 {
     public string? Entity { get; set; }

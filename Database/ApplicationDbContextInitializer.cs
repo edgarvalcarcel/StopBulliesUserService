@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PlanifyIdentity.Domain.Entities;
+using StopBulliesUserService.Domain.Entities;
 
-namespace PlanifyIdentity.Database;
+namespace StopBulliesUserService.Database;
 internal sealed class ApplicationDbContextInitializer(ApplicationDbContext context)
 {
     public async Task TrySeedAsync()

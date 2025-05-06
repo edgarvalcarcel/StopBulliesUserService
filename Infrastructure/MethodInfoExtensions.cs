@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using Ardalis.GuardClauses;
-namespace PlanifyIdentity.Infrastructure;
+namespace StopBulliesUserService.Infrastructure;
 
-public static class MethodInfoExtensions
+internal static class MethodInfoExtensions
 {
     public static bool IsAnonymous(this MethodInfo method)
     {

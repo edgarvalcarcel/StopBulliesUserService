@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace PlanifyIdentity.Migrations;
+namespace StopBulliesUserService.Migrations;
 
 /// <inheritdoc />
 internal sealed partial class AddTables : Migration

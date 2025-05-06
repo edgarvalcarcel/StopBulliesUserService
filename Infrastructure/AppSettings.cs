@@ -1,4 +1,4 @@
-﻿namespace PlanifyIdentity.Infrastructure;
+﻿namespace StopBulliesUserService.Infrastructure;
 
 internal sealed class AppSettings
 {

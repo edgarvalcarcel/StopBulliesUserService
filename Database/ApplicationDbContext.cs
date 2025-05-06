@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PlanifyIdentity.Domain.Entities;
+using StopBulliesUserService.Domain.Entities;
 
-namespace PlanifyIdentity.Database;
+namespace StopBulliesUserService.Database;
 
 internal sealed class ApplicationDbContext : IdentityDbContext<User>
 {

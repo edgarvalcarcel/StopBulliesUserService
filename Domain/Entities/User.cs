@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PlanifyIdentity.Domain.Entities;
+namespace StopBulliesUserService.Domain.Entities;
 
 internal sealed class User : IdentityUser
 {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace PlanifyIdentity.Extensions;
+namespace StopBulliesUserService.Extensions;
 
 internal sealed class IdentitySecrets
 {
