@@ -20,7 +20,7 @@
     <UserSecretsId>8c62e475-9eac-4b6c-93dc-97ea3a94c2a3</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-    <ApplicationIcon>PlanifyIdentity.ico</ApplicationIcon>
+    <ApplicationIcon>StopBulliesUserService.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,19 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Infrastructure\EmailSender.cs" />
-    <Compile Remove="Infrastructure\EndpointRouteBuilderExtensions.cs" />
-    <Compile Remove="Infrastructure\IEndpointGroupBase.cs" />
-    <Compile Remove="Infrastructure\MethodInfoExtensions.cs" />
-    <Compile Remove="Infrastructure\WebApplicationExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Dockerfile" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="PlanifyIdentity.ico" />
+    <Content Include="StopBulliesUserService.ico" />
   </ItemGroup>
 
   <ItemGroup>

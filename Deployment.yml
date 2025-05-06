@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planifyidentity-api-deployment
+  labels:
+    app: planifyidentity-api
+spec:
+  replicas: 3
+  selector:
+  matchLabels:
+    app: planifyidentity-api
+template:
+  metadata:
+    labels:
+    app: planifyidentity-api
+spec:
+  containers:
+    - name: planifyidentity-api
+      image: edgarvalcarcelb/planifyidentity:lastest
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 80
